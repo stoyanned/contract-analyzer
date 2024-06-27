@@ -40,7 +40,7 @@ public class ContractAnalyzer {
         System.out.println(contractIds);
 
         List<Contract> contracts = getContractDetails(token, contractIds);
-//        System.out.println(contracts);
+//    System.out.println(contracts);
 
         analyzeContracts(contracts);
         generalReport(contracts, "generalReport.csv");
@@ -65,7 +65,9 @@ public class ContractAnalyzer {
         String port = emailProps.getProperty("email.port");
         String username = emailProps.getProperty("email.username");
         String password = emailProps.getProperty("email.password");
-        String toAddress = "stne@softwareag.com";
+
+        List<String> toAddresses = Arrays.asList("gest@softwareag.com", "daniel.danev@softwareag.com", "stne@softwareag.com");
+
         String subject = "TMS Contracts Reports";
         String message = "Please find the attached reports.";
 
@@ -77,11 +79,12 @@ public class ContractAnalyzer {
         );
 
         try {
-            EmailSender.sendEmailWithAttachments(host, port, username, password, toAddress, subject, message, attachments);
+            EmailSender.sendEmailWithAttachments(host, port, username, password, toAddresses, subject, message, attachments);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
 
     private static List<String> getContractIds(String token) throws IOException {
         String url = "https://myconsole.softwareag.cloud/tms/contracts/";

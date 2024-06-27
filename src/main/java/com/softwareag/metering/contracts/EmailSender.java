@@ -9,7 +9,7 @@ import java.util.Properties;
 public class EmailSender {
 
     public static void sendEmailWithAttachments(String host, String port, final String userName, final String password,
-                                                String toAddress, String subject, String message, List<File> attachFiles)
+                                                List<String> toAddresses, String subject, String message, List<File> attachFiles)
             throws MessagingException {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
@@ -28,8 +28,11 @@ public class EmailSender {
 
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(userName));
-        InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
-        msg.setRecipients(Message.RecipientType.TO, toAddresses);
+        InternetAddress[] addressArray = new InternetAddress[toAddresses.size()];
+        for (int i = 0; i < toAddresses.size(); i++) {
+            addressArray[i] = new InternetAddress(toAddresses.get(i));
+        }
+        msg.setRecipients(Message.RecipientType.TO, addressArray);
         msg.setSubject(subject);
         msg.setSentDate(new java.util.Date());
 
